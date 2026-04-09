@@ -45,8 +45,8 @@ def delete_rec(): #Delete record
 
 while True:
     print("""Student Mental Health Analysis 📈 \n
--KEY- \n Fields = Gender/Age/CGPA(o/Year of Study/Course \n MHI = Particular Mental Health Issue (Depression/Anxiety/Panic Attack) \n
-~MENU~ \n 1. Display all records + Bar Chart \n 2. Add record \n 3. Modify record(s) \n 4. Delete record(s) \n
+-KEY- \n Fields = Gender / Age/ CGPA/ Year of Study/ Course \n MHI = Particular Mental Health Issue (Depression/Anxiety/Panic Attack) \n
+~MENU~ \n 1. Display all records \n 2. Add record \n 3. Modify record(s) \n 4. Delete record(s) \n
 ~QUERIES~ \n 5. Average Age of students with MHI \n 6. Count students with MHI \n 7. MHI by Fields \n 8. Distribution by Fields \n 9. Exit""")
     try:
       choice = int(input("Enter your choice: "))
