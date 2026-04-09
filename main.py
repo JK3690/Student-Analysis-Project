@@ -55,8 +55,11 @@ while True:
         continue
     menu = {1: disp_all, 2: add_rec, 3: modify_rec, 4: delete_rec, 5: avg_w_mhi, 6: count_w_mhi, 7: mhi_by_fields, 8: dist_by_fields}
     if choice == 9:
-        break
+        break   
     elif choice == 8:
         menu[choice](filename)
     elif choice in menu:
-        menu[choice]()
+        try:
+            menu[choice]()
+        except Exception as e:
+            print("Error:", e)
