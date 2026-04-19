@@ -5,28 +5,30 @@ config = {'user': 'root', 'password': 'Jess@2009', 'host': 'localhost','database
 
 #defining helper functions
 def convert(filename, **config):
-  con = m.connect(**config)
-  cursor = con.cursor()
-  with open(filename, 'r') as file:
-    reader = csv.reader(file)
-    headers = next(reader)
-    headers = [h.strip() for h in headers]
-    columns = []
-    for header in headers:
-        if header in ["Age", "Year"]:
-            columns.append(f"{header} INT")
-        elif header == "CGPA":
-            columns.append(f"{header} FLOAT")
-        else:
-            columns.append(f"{header} VARCHAR(255)")
-    columns = ', '.join(columns)
+    con = m.connect(**config)
+    cursor = con.cursor()
+    with open(filename, 'r') as file:
+        reader = csv.reader(file)
+        headers = next(reader)
+        headers = [h.strip() for h in headers]
+        columns = []
+        for header in headers:
+            if header in ["Age", "Year"]:
+                columns.append(f"`{header}` INT")
+            elif header == "Cgpa":
+                columns.append(f"`{header}` VARCHAR(20)")
+            else:
+                columns.append(f"`{header}` VARCHAR(255)")
+        columns_def = ', '.join(columns)
 
-    create_table_query = f"CREATE TABLE IF NOT EXISTS student_mental_health ({columns});"
-    cursor.execute(create_table_query)
-    insert_query = f"INSERT INTO student_mental_health ({', '.join(headers)}) VALUES ({', '.join(['%s']*len(headers))});"
-    for row in reader:
-        cursor.execute(insert_query, row)
-    con.commit()
+        cursor.execute("DROP TABLE IF EXISTS student_mental_health;")
+        cursor.execute(f"CREATE TABLE student_mental_health ({columns_def});")
+
+        escaped_headers = ', '.join(f'`{h}`' for h in headers)
+        insert_query = f"INSERT INTO student_mental_health ({escaped_headers}) VALUES ({', '.join(['%s']*len(headers))});"
+        for row in reader:
+            cursor.execute(insert_query, row)
+        con.commit()
     cursor.close()
     con.close()
 

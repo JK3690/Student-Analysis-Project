@@ -27,7 +27,7 @@ def add_rec(): #Add record
         (Gender, Age, Course, Year, nCGPA, Depression, Anxiety, Panic_attack, Specialist_seeked))
 
 def modify_rec(): #Modify record
-    allowed_fields = ["Gender", "Age", "Course", "Year_of_study", "Cgpa", 
+    allowed_fields = ["Gender", "Age", "Course", "Year", "Cgpa", 
                   "Depression", "Anxiety", "Panic_attack", "Specialist_seeked"]
     field = clean_input("Field to modify: ")
     if field not in allowed_fields:
@@ -44,7 +44,7 @@ def delete_rec(): #Delete record
 
 while True:
     print("""Student Mental Health Analysis 📈 \n
--KEY- \n Fields = Gender/Age/CGPA(o/Year of Study/Course \n MHI = Particular Mental Health Issue (Depression/Anxiety/Panic_attack) \n
+-KEY- \n Fields = Gender/Age/CGPA/Year/Course \n MHI = Particular Mental Health Issue (Depression/Anxiety/Panic_attack) \n
 ~MENU~ \n 1. Display all records + Bar Chart \n 2. Add record \n 3. Modify record(s) \n 4. Delete record(s) \n
 ~INSIGHTS~ \n 5. Show Insights \n 6. Distribution by MHI fields \n 7. MHI by Fields \n 8. Exit""")
     try:
@@ -52,7 +52,7 @@ while True:
     except (ValueError, TypeError):
         print("Invalid input. ⚠️ Enter choice number: ")
         continue
-    menu = {1: disp_all, 2: add_rec, 3: modify_rec, 4: delete_rec, 5: insights, 6: mhi_by_fields, 7: dist_by_fields }
+    menu = {1: disp_all, 2: add_rec, 3: modify_rec, 4: delete_rec, 5: insights, 6: dist_by_fields, 7: mhi_by_fields }
     if choice == 8:
         break
     elif choice in menu:
