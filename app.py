@@ -26,6 +26,8 @@ st.info("Interactive dashboard to analyze student mental health trends and suppo
 st.markdown("<br>", unsafe_allow_html=True)
 st.sidebar.header("Filters") #moves controls to left panel
 st.sidebar.divider()
+option = st.sidebar.selectbox("Select Mental Health Indicator", ["Depression", "Anxiety", "Panic_attack"])
+field = st.sidebar.selectbox("Compare by", ["Gender", "Course", "Year"])
 tab1, tab2 = st.tabs(["Overview", "Detailed Analysis"])
 
 with tab1:
@@ -43,12 +45,22 @@ with tab1:
         else:
             insight = "A relatively higher proportion of students are seeking help."   
     st.info(insight)
+    st.divider()
+    st.subheader("Top Affected Group")
+
+    query = f"""SELECT {field}, COUNT(*) FROM student_mental_health WHERE {option}='Yes' GROUP BY {field} 
+    ORDER BY COUNT(*) DESC LIMIT 1;"""
+    result = run_query(query, fetch=True)
+    top_group = result[0][0]
+    if field == 'Year':
+        st.write(f"Year {top_group} students have the highest {option} cases.")
+    else:
+        st.write(f"{top_group} students have the highest {option} cases.")
     
 with tab2:
     col1, col2 = st.columns(2)
     with col1:
         #pie chart
-        option = st.sidebar.selectbox("Select Mental Health Indicator", ["Depression", "Anxiety", "Panic_attack"])
         st.subheader(f"{option} Distribution")
         query = f"SELECT {option}, COUNT(*) FROM student_mental_health GROUP BY {option};"
         result = run_query(query, params=(), fetch=True)
@@ -61,7 +73,6 @@ with tab2:
         
     with col2: 
     #bar chart
-        field = st.sidebar.selectbox("Compare by", ["Gender", "Course", "Year"])
         query = f"SELECT {field}, COUNT(*) FROM student_mental_health WHERE {option}='Yes' GROUP BY {field} ORDER BY COUNT(*) DESC;"
         result = run_query(query, fetch=True)
         
@@ -72,14 +83,4 @@ with tab2:
         fig_bar.update_layout(title=f"{option} Distribution by {field}",title_x=0.2,  xaxis_title="Number of Students", showlegend=False, yaxis_title=f"{field}", uniformtext_minsize=8, uniformtext_mode='hide')
         fig_bar.update_traces(texttemplate='%{x}', textposition='outside', hovertemplate="Count: %{y}<extra></extra>")
         st.plotly_chart(fig_bar, width='stretch')
-
-with tab1:
-    st.divider()
-    st.subheader("Top Affected Group")
-    if field == 'Year':
-        st.write(f"Year {labels[0]} students have the highest {option} cases.")
-    else:
-        st.write(f"{labels[0]} students have the highest {option} cases.")
-            
-        
 #streamlit run app.py
