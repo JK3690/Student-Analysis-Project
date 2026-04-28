@@ -52,7 +52,7 @@ with tab1:
     if field == 'Year':
         st.write(f"Year {result} students have the highest {option} cases.")
     else:
-        st.write(f"{result} students have the highest {option} cases.")
+        st.write(f"{result[0]} students have the highest {option} cases.")
     
 with tab2:
     col1, col2 = st.columns(2)
