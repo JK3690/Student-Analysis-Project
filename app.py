@@ -47,12 +47,15 @@ with tab1:
     st.info(insight)
     st.divider()
     st.subheader("Top Affected Group")
-    query = f"SELECT {field}, COUNT(*) FROM student_mental_health WHERE {option}='Yes' GROUP BY {field} ORDER BY COUNT(*) DESC LIMIT 1;"
+
+    query = f"""SELECT {field}, COUNT(*) FROM student_mental_health WHERE {option}='Yes' GROUP BY {field} 
+    ORDER BY COUNT(*) DESC LIMIT 1;"""
     result = run_query(query, fetch=True)
+    top_group = result[0][0]
     if field == 'Year':
-        st.write(f"Year {result} students have the highest {option} cases.")
+        st.write(f"Year {top_group} students have the highest {option} cases.")
     else:
-        st.write(f"{result[0]} students have the highest {option} cases.")
+        st.write(f"{top_group} students have the highest {option} cases.")
     
 with tab2:
     col1, col2 = st.columns(2)
